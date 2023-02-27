@@ -1,4 +1,4 @@
-import { db } from "../src/database/database.js"
+import { db } from "../database/database.js"
 import bcrypt from "bcrypt";
 import { v4 as tokenGenerator } from "uuid";
 

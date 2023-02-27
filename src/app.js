@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import autrouters from "../routes/autrouters.js";
+import autrouters from "../src/routes/autrouters.js";
 
 dotenv.config();
 
