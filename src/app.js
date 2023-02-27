@@ -11,8 +11,8 @@ app.use(cors());
 
 app.use(autrouters);
 
+const PORT = 5000;
 
 
 
-
-app.listen(process.env.PORT, () => console.log(`Server running`));
+app.listen(PORT, () => console.log(`Server running`));
