@@ -21,46 +21,14 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: Users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public."Users" (
-    "IdUsuario" integer NOT NULL,
-    name text NOT NULL,
-    email text NOT NULL,
-    password text NOT NULL,
-    "confirmPassword" text NOT NULL
-);
-
-
---
--- Name: Users_IdUsuario_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public."Users_IdUsuario_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: Users_IdUsuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public."Users_IdUsuario_seq" OWNED BY public."Users"."IdUsuario";
-
-
---
 -- Name: sessions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.sessions (
     "Idsessions" integer NOT NULL,
     token text NOT NULL,
-    "user" text NOT NULL
+    "user" text NOT NULL,
+    "createdAt" text NOT NULL
 );
 
 
@@ -85,10 +53,37 @@ ALTER SEQUENCE public."sessions_Idsessions_seq" OWNED BY public.sessions."Idsess
 
 
 --
--- Name: Users IdUsuario; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."Users" ALTER COLUMN "IdUsuario" SET DEFAULT nextval('public."Users_IdUsuario_seq"'::regclass);
+CREATE TABLE public.users (
+    "IdUsuario" integer NOT NULL,
+    name text NOT NULL,
+    email text NOT NULL,
+    password text NOT NULL,
+    "confirmPassword" text NOT NULL,
+    "createdAt" text NOT NULL
+);
+
+
+--
+-- Name: users_IdUsuario_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."users_IdUsuario_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_IdUsuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."users_IdUsuario_seq" OWNED BY public.users."IdUsuario";
 
 
 --
@@ -99,9 +94,10 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN "Idsessions" SET DEFAULT nextval('
 
 
 --
--- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: -
+-- Name: users IdUsuario; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY public.users ALTER COLUMN "IdUsuario" SET DEFAULT nextval('public."users_IdUsuario_seq"'::regclass);
 
 
 --
@@ -111,10 +107,9 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN "Idsessions" SET DEFAULT nextval('
 
 
 --
--- Name: Users_IdUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."Users_IdUsuario_seq"', 1, false);
 
 
 --
@@ -125,11 +120,10 @@ SELECT pg_catalog.setval('public."sessions_Idsessions_seq"', 1, false);
 
 
 --
--- Name: Users Users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users_IdUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public."Users"
-    ADD CONSTRAINT "Users_pkey" PRIMARY KEY ("IdUsuario");
+SELECT pg_catalog.setval('public."users_IdUsuario_seq"', 1, false);
 
 
 --
@@ -138,6 +132,14 @@ ALTER TABLE ONLY public."Users"
 
 ALTER TABLE ONLY public.sessions
     ADD CONSTRAINT sessions_pkey PRIMARY KEY ("Idsessions");
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY ("IdUsuario");
 
 
 --
