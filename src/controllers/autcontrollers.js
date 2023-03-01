@@ -13,8 +13,8 @@ export async function signUp(req, res) {
     }
     const hashPassword =  bcrypt.hashSync(password, 10);
     await db.query(
-      `INSERT INTO users (name, email, password, confirmPassword) VALUES($1, $2, $3 , $4);`,
-      [name, email, hashPassword,hashPassword]
+      `INSERT INTO users (name, email, password) VALUES($1, $2, $3 );`,
+      [name, email, hashPassword]
     );
 
     res.sendStatus(201);
