@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { signUp, signIn } from "../controllers/autcontrollers.js";
-import {validateUSchema , validateLSchema} from "../middlewares/schemavalidate.js";
+import {validateSchema } from "../middlewares/schemavalidate.js";
+import { uSchema,lSchema } from "../schemas/uSchema.js";
 
 
 const route = Router();
-route.post("/signup", validateUSchema, signUp);
-route.post("/signin",validateLSchema, signIn);
+route.post("/signup",validateSchema(uSchema), signUp);
+route.post("/signin",validateSchema(lSchema), signIn);
 
 export default route;

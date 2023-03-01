@@ -5,11 +5,13 @@ import { v4 as tokenGenerator } from "uuid";
 
 export async function signUp(req, res) {
 
+  const { name, email, password } = req.body;
   try {
-    const user = res.locals.user;
-    const { name, email, password } = user;
-
-    const hashPassword = bcrypt.hashSync(password, 10);
+    const user = await db.query(`SELECT * FROM users WHERE email=$1;`, [email])
+    if(user.rowCount !== 0){
+        return res.sendStatus(409)
+    }
+    const hashPassword = await bcrypt.hashSync(password, 10);
     await db.query(
       `INSERT INTO users (name, email, password, confirmPassword) VALUES($1, $2, $3 , $4);`,
       [name, email, hashPassword,hashPassword]
@@ -26,17 +28,16 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
  
-  const login = res.locals.userLogin;
-  const { email, password } = login;
+  const { email, password } = req.body;
   const token = tokenGenerator();
 
   try {
-    const findId = await connectionDB.query(
+    const findId = await db.query(
       `SELECT id, name FROM users WHERE email=$1;`,
       [email]
     );
     const userId = findId.rows[0].id;
-    await connectionDB.query(
+    await db.query(
       `INSERT INTO sessions (user_id, token) VALUES ($1, $2);`,
       [userId, token]
     );
