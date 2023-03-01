@@ -37,11 +37,11 @@ export async function signIn(req, res) {
     if ((userExists.rows.length !== 0) && bcrypt.compareSync(password, userExists.rows[0].password)) {
       const token = uuid();
       await db.query(`
-          DELETE FROM "Sessions" 
+          DELETE FROM sessions 
           WHERE "userId" = $1
       `,[userExists.rows[0].id]);
       await db.query(`
-          INSERT INTO "Sessions" 
+          INSERT INTO sessions
           (token,"userId","createdAt") 
           VALUES ($1, $2,NOW())
       `,[token,userExists.rows[0].id]);
