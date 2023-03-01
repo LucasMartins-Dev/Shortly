@@ -4,7 +4,7 @@ import {validateUSchema , validateLSchema} from "../middlewares/schemavalidate.j
 
 
 const route = Router();
-route.post("/sign-up", validateUSchema, signUp);
-route.post("/sign-in",validateLSchema, signIn);
+route.post("/signup", validateUSchema, signUp);
+route.post("/signin",validateLSchema, signIn);
 
 export default route;
