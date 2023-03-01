@@ -32,25 +32,24 @@ export async function signIn(req, res) {
   const {email, password} = req.body
 
   try {
-    const user = await db.query('SELECT * FROM users WHERE email = $1', [email])
+    const user = await connection.query(`SELECT * FROM users WHERE email=$1;`, [email])
 
-    if (user.rowCount === 0) return res.sendStatus(401)
-
-    if (!bcrypt.compareSync(password, user.rows[0].password)) return res.sendStatus(401)
-
-    const userToken = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
-
-    const token = uuid()
-
-    if (userToken.rowCount !== 0) {
-      await db.query('UPDATE sessions SET token = $1', [token])
-    } else {
-      await db.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2)', [token, user.rows[0].id])
+    if(user.rowCount === 0){
+        return res.sendStatus(401)
+    }else if(!bcrypt.compareSync(password, user.rows[0].password)){
+        return res.sendStatus(401)
     }
 
-    res.status(200).send({token: token})
-  } catch (err) {
-    res.status(500).send(err.message)
-  }
+    const token = uuidV4()
+
+    await connection.query(`
+        INSERT INTO sessions (token, "userId")
+        VALUES ($1, $2);
+    `, [token, user.rows[0].id])
+
+    res.status(200).send({token})
+} catch (error) {
+  res.status(500).send(error.message);
+}
 
 }
