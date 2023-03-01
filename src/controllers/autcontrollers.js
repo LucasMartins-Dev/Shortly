@@ -5,53 +5,46 @@ import { v4 as tokenGenerator } from "uuid";
 
 export async function signUp(req, res) {
 
-    try {
-      const existsUser = await db
-        .collection("users")
-        .find({ name: req.body.name })
-        .toArray();
-      if (existsUser.length !== 0) {
-        console.log("Usuário já existe");
-        res.sendStatus(409);
-        return;
-      }
-  
-      const pswd = bcrypt.hashSync(req.body.password, 10);
-      await db.collection("users").insertOne({
-        name: req.body.name,
-        email: req.body.email,
-        password: pswd,
-        confirmpassword:pswd,
-      });
-      res.sendStatus(201);
-    } catch (erro) {
-      console.log(erro);
-      return res.sendStatus(500);
-    }
-  }
-
-export async function signIn(req, res) {
-  const { email, password } = req.body;
-
   try {
-    const existsUser = await db.collection("users").findOne({ email });
-    console.log(existsUser)
-    if (!existsUser) {
-      return res.status(401).send('Usuário ou senha incorretos');
-    }
-    const pswd = bcrypt.compareSync(password, existsUser.password);
+    const user = res.locals.user;
+    const { name, email, password } = user;
 
-    if (!pswd) {
-      return res.status(401).send('Usuário ou senha incorretos');
-    }
-    const token = tokenGenerator();
-    await db
-      .collection("sessions")
-      .insertOne({ token, user: existsUser._id });
+    const hashPassword = bcrypt.hashSync(password, 10);
+    await db.query(
+      `INSERT INTO users (name, email, password, confirmPassword) VALUES($1, $2, $3 , $4);`,
+      [name, email, hashPassword]
+    );
 
-    res.send({ token , user: existsUser.name });
-  } catch (erro) {
-    console.log(erro);
+    res.sendStatus(201);
+  } catch (err) {
+    console.log(err);
     res.sendStatus(500);
   }
+}
+
+  
+
+export async function signIn(req, res) {
+ 
+  const login = res.locals.userLogin;
+  const { email, password } = login;
+  const token = tokenGenerator();
+
+  try {
+    const findId = await connectionDB.query(
+      `SELECT id, name FROM users WHERE email=$1;`,
+      [email]
+    );
+    const userId = findId.rows[0].id;
+    await connectionDB.query(
+      `INSERT INTO sessions (user_id, token) VALUES ($1, $2);`,
+      [userId, token]
+    );
+
+    return res.status(200).send(token);
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(500);
+  }
+
 }

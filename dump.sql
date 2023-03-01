@@ -25,18 +25,18 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.sessions (
-    "Idsessions" integer NOT NULL,
+    "Id" integer NOT NULL,
+    "userId" text NOT NULL,
     token text NOT NULL,
-    "user" text NOT NULL,
-    "createdAt" text NOT NULL
+    "createdAt" timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: sessions_Idsessions_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sessions_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."sessions_Idsessions_seq"
+CREATE SEQUENCE public."sessions_Id_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -46,10 +46,10 @@ CREATE SEQUENCE public."sessions_Idsessions_seq"
 
 
 --
--- Name: sessions_Idsessions_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: sessions_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."sessions_Idsessions_seq" OWNED BY public.sessions."Idsessions";
+ALTER SEQUENCE public."sessions_Id_seq" OWNED BY public.sessions."Id";
 
 
 --
@@ -57,20 +57,20 @@ ALTER SEQUENCE public."sessions_Idsessions_seq" OWNED BY public.sessions."Idsess
 --
 
 CREATE TABLE public.users (
-    "IdUsuario" integer NOT NULL,
+    "Id" integer NOT NULL,
     name text NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
     "confirmPassword" text NOT NULL,
-    "createdAt" text NOT NULL
+    "createdAt" timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: users_IdUsuario_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: users_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public."users_IdUsuario_seq"
+CREATE SEQUENCE public."users_Id_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -80,24 +80,24 @@ CREATE SEQUENCE public."users_IdUsuario_seq"
 
 
 --
--- Name: users_IdUsuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: users_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public."users_IdUsuario_seq" OWNED BY public.users."IdUsuario";
-
-
---
--- Name: sessions Idsessions; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.sessions ALTER COLUMN "Idsessions" SET DEFAULT nextval('public."sessions_Idsessions_seq"'::regclass);
+ALTER SEQUENCE public."users_Id_seq" OWNED BY public.users."Id";
 
 
 --
--- Name: users IdUsuario; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sessions Id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN "IdUsuario" SET DEFAULT nextval('public."users_IdUsuario_seq"'::regclass);
+ALTER TABLE ONLY public.sessions ALTER COLUMN "Id" SET DEFAULT nextval('public."sessions_Id_seq"'::regclass);
+
+
+--
+-- Name: users Id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN "Id" SET DEFAULT nextval('public."users_Id_seq"'::regclass);
 
 
 --
@@ -113,17 +113,17 @@ ALTER TABLE ONLY public.users ALTER COLUMN "IdUsuario" SET DEFAULT nextval('publ
 
 
 --
--- Name: sessions_Idsessions_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: sessions_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."sessions_Idsessions_seq"', 1, false);
+SELECT pg_catalog.setval('public."sessions_Id_seq"', 1, false);
 
 
 --
--- Name: users_IdUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: users_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_IdUsuario_seq"', 1, false);
+SELECT pg_catalog.setval('public."users_Id_seq"', 1, false);
 
 
 --
@@ -131,7 +131,7 @@ SELECT pg_catalog.setval('public."users_IdUsuario_seq"', 1, false);
 --
 
 ALTER TABLE ONLY public.sessions
-    ADD CONSTRAINT sessions_pkey PRIMARY KEY ("Idsessions");
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY ("Id");
 
 
 --
@@ -139,7 +139,7 @@ ALTER TABLE ONLY public.sessions
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY ("IdUsuario");
+    ADD CONSTRAINT users_pkey PRIMARY KEY ("Id");
 
 
 --
