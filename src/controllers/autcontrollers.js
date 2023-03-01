@@ -31,7 +31,7 @@ export async function signIn(req, res) {
  
   const {email, password} = req.body
 
-  try {
+ 
     const user = await db.query(`SELECT * FROM users WHERE email = $1`, [email])
 
     if ((userExists.rows.length !== 0) && bcrypt.compareSync(password, userExists.rows[0].password)) {
@@ -49,8 +49,6 @@ export async function signIn(req, res) {
   } else {
       return res.sendStatus(401);
   }
-  } catch (err) {
-    res.status(500).send(err.message)
-  }
+  
 
 }
