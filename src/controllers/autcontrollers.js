@@ -1,6 +1,6 @@
 import { db } from "../database/database.js"
 import bcrypt from "bcrypt";
-import { v4 as tokenGenerator } from "uuid";
+import { v4 as uuid } from "uuid";
 
 
 export async function signUp(req, res) {
@@ -29,24 +29,28 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
  
-  const { email, password } = req.body;
-  const token = tokenGenerator();
+  const {email, password} = req.body
 
   try {
-    const findId = await db.query(
-      `SELECT id, name FROM users WHERE email=$1;`,
-      [email]
-    );
-    const userId = findId.rows[0].id;
-    await db.query(
-      `INSERT INTO sessions (user_id, token) VALUES ($1, $2);`,
-      [userId, token]
-    );
+    const user = await db.query('SELECT * FROM users WHERE email = $1', [email])
 
-    return res.status(200).send(token);
+    if (user.rowCount === 0) return res.sendStatus(401)
+
+    if (!bcrypt.compareSync(password, user.rows[0].password)) return res.sendStatus(401)
+
+    const userToken = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
+
+    const token = uuid()
+
+    if (userToken.rowCount !== 0) {
+      await db.query('UPDATE sessions SET token = $1', [token])
+    } else {
+      await db.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2)', [token, user.rows[0].id])
+    }
+
+    res.send({token: token})
   } catch (err) {
-    console.log(err);
-    return res.sendStatus(500);
+    res.status(500).send(err.message)
   }
 
 }
