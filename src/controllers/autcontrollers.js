@@ -8,6 +8,9 @@ export async function signUp(req, res) {
   const { name, email, password } = req.body;
   try {
     
+    const hasEmail = await db.query('SELECT * FROM users WHERE email = $1', [email])
+
+    if (hasEmail.rowCount !== 0) return res.sendStatus(409)
   
     const hashPassword =  bcrypt.hashSync(password, 10);
     await db.query(
