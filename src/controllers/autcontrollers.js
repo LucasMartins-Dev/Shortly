@@ -46,7 +46,7 @@ export async function signIn(req, res) {
     if (userToken.rowCount !== 0) {
       await db.query(`UPDATE sessions SET token = $1`, [token])
     } else {
-      await db.query(`INSERT INTO sessions (token, "userId") VALUES ($1, $2)`, [token, user.rows[0].id])
+      await db.query(`INSERT INTO sessions ("userId", token) VALUES ($1, $2)`, [ user.rows[0].id],token)
     }
     
 
