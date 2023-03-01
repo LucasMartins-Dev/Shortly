@@ -7,10 +7,7 @@ export async function signUp(req, res) {
 
   const { name, email, password } = req.body;
   try {
-    const user = await db.query(`SELECT * FROM users WHERE email=$1;`, [email])
-    if(user.rowCount !== 0){
-        return res.sendStatus(409)
-    }
+  
     const hashPassword =  bcrypt.hashSync(password, 10);
     await db.query(
       `INSERT INTO users (name, email, password) VALUES($1, $2, $3 );`,

@@ -61,7 +61,7 @@ CREATE TABLE public.users (
     name text NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
-    "createdAt" timestamp without time zone NOT NULL
+    "createdAt" timestamp without time zone
 );
 
 
