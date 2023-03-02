@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateToken } from "../middlewares/schemavalidate.js";
-import { urlSchema } from "../schemas/urlSchemas.js";
+import { urlSchema } from "../schemas/urlSchema.js";
 import { shorten, getUrlById, getShortUrl, deleteUrlById } from "../controllers/urlcontrollers.js";
 import { validateSchema } from "../middlewares/schemavalidate.js";
 
