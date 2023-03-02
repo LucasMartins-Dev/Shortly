@@ -15,25 +15,17 @@ export function validateSchema(schema) {
 
 
 export async function validateToken(req, res, next) {
-  const { authorization } = req.headers;
-  const token = authorization?.replace("Bearer ", "");
-  if (!token) {
-    return res.sendStatus(401);
-  }
+  const { authorization } = req.headers
+  const token = authorization?.replace("Bearer ", '')
+  if (!token) return res.status(401).send("Informe o token!")
   try {
-    const confirmToken = await db.query(
-      `SELECT * FROM sessions WHERE token=$1;`,
-      [token]
-    );
-    if (confirmToken.rowCount < 1) {
-      return res.sendStatus(401);
+    const checkSession = await connection.query(`SELECT * FROM sessions WHERE token=$1;`, [token])
+    if(checkSession.rowCount === 0){
+        return res.status(401).send("Você não tem autorização")
     }
-    const userId = confirmToken.rows[0].user_id;
-
-    res.locals.userId = userId;
-    next();
-  } catch (err) {
-    console.log(err);
-    return res.sendStatus(500);
+    res.locals.session = checkSession
+    next()
+  } catch (error) {
+    res.status(500).send(error);
   }
 }
