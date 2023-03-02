@@ -52,7 +52,7 @@ export async function signIn(req, res) {
 
     res.status(200).send({token})
   } catch (err) {
-    res.status(500).send(err.message)
+    res.status(500).send("deu ruim")
   }
 
 }

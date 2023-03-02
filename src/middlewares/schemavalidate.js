@@ -21,7 +21,7 @@ export async function validateToken(req, res, next) {
   try {
     const checkSession = await connection.query(`SELECT * FROM sessions WHERE token=$1;`, [token])
     if(checkSession.rowCount === 0){
-        return res.status(401).send("Você não tem autorização")
+        return res.status(401).send("Você não tem autorização ")
     }
     res.locals.session = checkSession
     next()
