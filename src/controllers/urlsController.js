@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { db } from "../config/database.connection.js";
+import { db } from "../config/database.js";
 
 export async function createShortUrl(req, res) {
   const {url} = req.body

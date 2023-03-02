@@ -1,4 +1,4 @@
-import { db } from "../config/database.connection.js";
+import { db } from "../config/database.js";
 
 export async function getRanking(req, res) {
   try {

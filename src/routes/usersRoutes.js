@@ -2,8 +2,8 @@ import { Router } from "express";
 import { getUserLinks } from "../controllers/usersController.js";
 import { tokenValidation } from "../middlewares/tokenValidation.js";
 
-const userRouter = Router()
+const route = Router()
 
-userRouter.get('/users/me', tokenValidation, getUserLinks)
+route.get('/users/me', tokenValidation, getUserLinks)
 
-export default userRouter
+export default route

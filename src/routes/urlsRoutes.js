@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { createShortUrl, deleteUrl, getUrlById, openUrl } from "../controllers/urlsController.js";
-import { tokenValidation } from "../middlewares/tokenValidation.js";
+import { TokenValidation } from "../middlewares/tokenValidation.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
 import { shortUrlSchema } from "../schemas/urlsSchemas.js";
 
-const urlRouter = Router()
+const route = Router()
 
-urlRouter.post('/urls/shorten', tokenValidation, validateSchema(shortUrlSchema), createShortUrl)
-urlRouter.get('/urls/:id', getUrlById)
-urlRouter.get('/urls/open/:shortUrl', openUrl)
-urlRouter.delete('/urls/:id', tokenValidation, deleteUrl)
+route.post('/urls/shorten', TokenValidation, validateSchema(shortUrlSchema), createShortUrl)
+route.get('/urls/:id', getUrlById)
+route.get('/urls/open/:shortUrl', openUrl)
+route.delete('/urls/:id', TokenValidation, deleteUrl)
 
-export default urlRouter
+export default route

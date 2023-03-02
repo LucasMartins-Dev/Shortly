@@ -1,18 +1,18 @@
 import bcrypt from "bcrypt"
-import { db } from "../config/database.connection.js";
+import { db } from "../database/database.js";
 import { v4 as uuid } from "uuid";
 
 export async function signUp(req, res) {
   const {name, email, password} = req.body
 
   try {
-    const hasEmail = await db.query('SELECT * FROM users WHERE email = $1', [email])
+    const eemail = await db.query('SELECT * FROM users WHERE email = $1', [email])
 
-    if (hasEmail.rowCount !== 0) return res.sendStatus(409)
+    if (eemail.rowCount !== 0) return res.sendStatus(409)
 
-    const passwordHashed = bcrypt.hashSync(password, 10)
+    const HashPassword = bcrypt.hashSync(password, 10)
 
-    await db.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, passwordHashed])
+    await db.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, HashPassword])
 
     res.sendStatus(201)
   } catch (err) {
@@ -30,11 +30,11 @@ export async function signIn(req, res) {
 
     if (!bcrypt.compareSync(password, user.rows[0].password)) return res.sendStatus(401)
 
-    const userToken = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
+    const uToken = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
 
     const token = uuid()
 
-    if (userToken.rowCount !== 0) {
+    if (uToken.rowCount !== 0) {
       await db.query('UPDATE sessions SET token = $1', [token])
     } else {
       await db.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2)', [token, user.rows[0].id])
