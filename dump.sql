@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.6 (Ubuntu 14.6-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.6 (Ubuntu 14.6-0ubuntu0.22.04.1)
+-- Dumped from database version 12.13 (Ubuntu 12.13-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.13 (Ubuntu 12.13-0ubuntu0.20.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,8 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.sessions (
     id integer NOT NULL,
     token text NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now(),
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -58,11 +58,11 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 CREATE TABLE public.urls (
     id integer NOT NULL,
-    "shortUrl" text NOT NULL,
     url text NOT NULL,
+    "shortenUrl" text NOT NULL,
     "userId" integer NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "visitCount" integer DEFAULT 0 NOT NULL
+    "visitCount" integer DEFAULT 0 NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -92,10 +92,10 @@ ALTER SEQUENCE public.urls_id_seq OWNED BY public.urls.id;
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    name text NOT NULL,
+    name character varying(50) NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now()
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -146,6 +146,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 
+
 --
 -- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -163,21 +164,21 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 12, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
 
 
 --
 -- Name: urls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.urls_id_seq', 22, true);
+SELECT pg_catalog.setval('public.urls_id_seq', 4, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 17, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
@@ -194,14 +195,6 @@ ALTER TABLE ONLY public.sessions
 
 ALTER TABLE ONLY public.urls
     ADD CONSTRAINT urls_pkey PRIMARY KEY (id);
-
-
---
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_email_key UNIQUE (email);
 
 
 --
@@ -231,4 +224,3 @@ ALTER TABLE ONLY public.urls
 --
 -- PostgreSQL database dump complete
 --
-

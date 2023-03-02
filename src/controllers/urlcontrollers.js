@@ -3,21 +3,21 @@ import { db }from '../database/database.js'
 import { nanoid } from 'nanoid'
 
 export async function shorten(req, res) {
-    const { url } = req.body
+    const {url} = req.body
+    const session = res.locals.session
+    const shortUrl = nanoid(8)
+  
     try {
-        const session = res.locals.session;
-        const shortUrl = nanoid()
-        
-        await db.query(`
-            INSERT INTO urls ("shortUrl", url, "userId")
-            VALUES ($1, $2, $3);
-        `, [shortUrl, url, session.rows[0].userId])
-
-        const shortUrlId = await db.query(`SELECT id, "shortUrl" FROM urls WHERE "shortUrl"=$1;`, [shortUrl])
-
-        res.status(201).send(shortUrlId.rows[0])
-    } catch (error) {
-        res.status(500).send("Erro no servidor");
+      await db.query('INSERT INTO urls (url, "shortenUrl", "userId") VALUES ($1, $2, $3)', [url, shortUrl, session.userId])
+  
+      const lastId = await db.query('SELECT max(id) as "lastestId" FROM urls')
+  
+      res.status(201).send({
+        id: lastId.rows[0].lastestId,
+        shortUrl: shortUrl
+      })
+    } catch (err) {
+      res.status(500).send(err.message)
     }
 }
 
