@@ -1,6 +1,5 @@
 import { db } from "../database/database.js";
-import { lSchema, uSchema } from "../schemas/uSchema.js";
-import bcrypt from "bcrypt";
+
 
 export function validateSchema(schema) {
   

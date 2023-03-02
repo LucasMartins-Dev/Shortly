@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import autrouters from "./routes/autrouters.js";
 import urlrouters from "./routes/urlrouters.js";
-import userrouters from "./routes/userrouters.js"
 
 dotenv.config();
 
@@ -13,7 +12,7 @@ app.use(cors());
 
 app.use(autrouters);
 app.use(urlrouters);
-app.use(userrouters);
+
 
 const PORT = 5000;
 
