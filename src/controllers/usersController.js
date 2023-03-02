@@ -1,4 +1,4 @@
-import { db } from "../config/database.js";
+import { db } from "../database/database.js";
 
 export async function getUserLinks(req, res) {
   const session =  res.locals.session
