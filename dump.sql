@@ -53,6 +53,39 @@ ALTER SEQUENCE public."sessions_Id_seq" OWNED BY public.sessions."Id";
 
 
 --
+-- Name: urls; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.urls (
+    "Id" integer NOT NULL,
+    "shortUrl" text NOT NULL,
+    url text NOT NULL,
+    "userId" text NOT NULL,
+    "createdAt" timestamp without time zone
+);
+
+
+--
+-- Name: urls_Id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."urls_Id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: urls_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."urls_Id_seq" OWNED BY public.urls."Id";
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -93,6 +126,13 @@ ALTER TABLE ONLY public.sessions ALTER COLUMN "Id" SET DEFAULT nextval('public."
 
 
 --
+-- Name: urls Id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.urls ALTER COLUMN "Id" SET DEFAULT nextval('public."urls_Id_seq"'::regclass);
+
+
+--
 -- Name: users Id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -101,6 +141,12 @@ ALTER TABLE ONLY public.users ALTER COLUMN "Id" SET DEFAULT nextval('public."use
 
 --
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+
+
+--
+-- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 
@@ -119,6 +165,13 @@ SELECT pg_catalog.setval('public."sessions_Id_seq"', 1, false);
 
 
 --
+-- Name: urls_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."urls_Id_seq"', 1, false);
+
+
+--
 -- Name: users_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -131,6 +184,14 @@ SELECT pg_catalog.setval('public."users_Id_seq"', 1, false);
 
 ALTER TABLE ONLY public.sessions
     ADD CONSTRAINT sessions_pkey PRIMARY KEY ("Id");
+
+
+--
+-- Name: urls urls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.urls
+    ADD CONSTRAINT urls_pkey PRIMARY KEY ("Id");
 
 
 --
