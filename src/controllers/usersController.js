@@ -23,7 +23,7 @@ export async function getUserLinks(req, res) {
       GROUP BY users.id
     `, [session.userId]);
 
-    res.send(links.rows[0]);
+    res.status(200).send(links.rows[0]);
   } catch (error) {
     res.status(500).send(error.message);
   }
