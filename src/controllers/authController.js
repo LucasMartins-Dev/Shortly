@@ -1,18 +1,19 @@
+// Use meaningful variable names
 import bcrypt from "bcrypt"
 import { db } from "../database/database.js";
 import { v4 as uuid } from "uuid";
 
 export async function signUp(req, res) {
-  const {name, email, password} = req.body
+  const { name, email, password } = req.body
 
   try {
-    const eemail = await db.query('SELECT * FROM users WHERE email = $1', [email])
+    const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email])
 
-    if (eemail.rowCount !== 0) return res.sendStatus(409)
+    if (existingUser.rowCount !== 0) return res.sendStatus(409)
 
-    const HashPassword = bcrypt.hashSync(password, 10)
+    const hashedPassword = bcrypt.hashSync(password, 10)
 
-    await db.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, HashPassword])
+    await db.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, hashedPassword])
 
     res.sendStatus(201)
   } catch (err) {
@@ -21,7 +22,7 @@ export async function signUp(req, res) {
 }
 
 export async function signIn(req, res) {
-  const {email, password} = req.body
+  const { email, password } = req.body
 
   try {
     const user = await db.query('SELECT * FROM users WHERE email = $1', [email])
@@ -30,17 +31,17 @@ export async function signIn(req, res) {
 
     if (!bcrypt.compareSync(password, user.rows[0].password)) return res.sendStatus(401)
 
-    const uToken = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
+    const userSession = await db.query('SELECT * FROM sessions WHERE "userId" = $1', [user.rows[0].id])
 
     const token = uuid()
 
-    if (uToken.rowCount !== 0) {
+    if (userSession.rowCount !== 0) {
       await db.query('UPDATE sessions SET token = $1', [token])
-    } else {
+    }else {
       await db.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2)', [token, user.rows[0].id])
     }
 
-    res.send({token: token})
+    res.send({ token }) // use meaningful variable names
   } catch (err) {
     res.status(500).send(err.message)
   }
