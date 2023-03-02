@@ -1,4 +1,4 @@
-// Use meaningful variable names
+
 import bcrypt from "bcrypt"
 import { db } from "../database/database.js";
 import { v4 as uuid } from "uuid";
@@ -41,7 +41,7 @@ export async function signIn(req, res) {
       await db.query('INSERT INTO sessions (token, "userId") VALUES ($1, $2)', [token, user.rows[0].id])
     }
 
-    res.send({ token }) // use meaningful variable names
+    res.send({ token }) 
   } catch (err) {
     res.status(500).send(err.message)
   }

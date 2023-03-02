@@ -1,8 +1,19 @@
 import { db } from "../database/database.js";
 
+
 export async function getRanking(req, res) {
   try {
-    const ranking = await db.query(`
+    const usersWithLinks = await getTopUsersWithLinks();
+
+    res.send(usersWithLinks);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+}
+
+
+async function getTopUsersWithLinks() {
+  const query = `
     SELECT
       users.id,
       users.name,
@@ -14,10 +25,9 @@ export async function getRanking(req, res) {
     GROUP BY users.id
     ORDER BY "visitCount" DESC
     LIMIT 10
-    `)
+  `;
 
-    res.send(ranking.rows)
-  } catch (err) {
-    res.status(500).send(err.message)
-  }
+  const result = await db.query(query);
+
+  return result.rows;
 }
