@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signIn, signUp } from "../controllers/authController.js";
+import { signIn, signUp } from "../controllers/autcontrollers.js";
 import { validateSchema } from "../middlewares/validateSchema.js";
 import { signInSchema, signUpSchema } from "../schemas/authSchemas.js";
 

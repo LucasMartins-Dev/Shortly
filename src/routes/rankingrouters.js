@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getRanking } from "../controllers/rankingController.js";
+import { getRanking } from "../controllers/rankingcontrollers.js";
 
 const route = Router()
 

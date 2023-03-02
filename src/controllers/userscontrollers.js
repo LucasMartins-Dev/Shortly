@@ -1,7 +1,7 @@
 import { db } from "../database/database.js";
 
 export async function getUserLinks(req, res) {
-  const session =  res.locals.session
+  const session =  res.locals.session;
 
   try {
     const links = await db.query(`
@@ -20,10 +20,10 @@ export async function getUserLinks(req, res) {
       ON users.id = urls."userId"
     WHERE users.id = $1
     GROUP BY users.id
-    `, [session.userId])
+    `, [session.userId]);
 
-    res.send(links.rows[0])
+    res.send(links.rows[0]);
   } catch (err) {
-    res.status(500).send(err.message)
+    res.status(500).send(err.message);
   }
 }

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserLinks } from "../controllers/usersController.js";
+import { getUserLinks } from "../controllers/userscontrollers.js";
 import { TokenValidation } from "../middlewares/tokenValidation.js";
 
 const route = Router()
