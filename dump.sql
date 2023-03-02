@@ -144,20 +144,23 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-
+INSERT INTO public.sessions VALUES (1, '55dfde20-371b-40b9-b85d-7380b5f4e441', 2, '2023-02-28 10:41:23.321514');
 
 
 --
 -- Data for Name: urls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.urls VALUES (4, 'https://youtu.be/d_LhLshCoIM', 'nrsx4RTh', 2, 2, '2023-03-01 01:22:20.174872');
+INSERT INTO public.urls VALUES (3, 'https://youtu.be/d_LhLshCoIM', 'nad2nk4N', 2, 1, '2023-03-01 01:22:12.777916');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-
+INSERT INTO public.users VALUES (1, 'Claudio', 'claudio@gmail.com', '$2b$10$z0JjlnSkTSNOfIDSQo0YPuEgcRPAh1a./nsLozZR4l9QO2tT7/.ge', '2023-02-27 21:35:50.449439');
+INSERT INTO public.users VALUES (2, 'Fábio', 'teste@gmail.com', '$2b$10$xWn3Vp6pC2o2y8sj51Y.Dea5kFEmme41XOe.34BG8xwCYTJ5NpP6a', '2023-02-27 21:36:17.203281');
 
 
 --
@@ -224,3 +227,4 @@ ALTER TABLE ONLY public.urls
 --
 -- PostgreSQL database dump complete
 --
+

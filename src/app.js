@@ -1,21 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import autrouters from "./routes/autrouters.js";
-import urlrouters from "./routes/urlrouters.js";
+import express from "express"
+import cors from "cors"
+import dotenv from "dotenv"
+import authRouter from "./routes/authRoutes.js"
+import urlRouter from "./routes/urlsRoutes.js"
+import userRouter from "./routes/usersRoutes.js"
+import rankingRouter from "./routes/rankingRoutes.js"
 
-dotenv.config();
+dotenv.config()
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+const server = express()
+server.use(cors())
+server.use(express.json())
+server.use([authRouter, urlRouter, userRouter, rankingRouter])
 
-app.use(autrouters);
-app.use(urlrouters);
+const port = process.env.PORT || 5000
 
-
-const PORT = 5000;
-
-
-
-app.listen(PORT, () => console.log(`Server running`));
+server.listen(port, () => console.log(`O server está rodando na porta: ${port}`))
