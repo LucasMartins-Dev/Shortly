@@ -8,11 +8,11 @@ import rankingroute from "./routes/rankingrouters.js"
 
 dotenv.config()
 
-const server = express()
-server.use(cors())
-server.use(express.json())
-server.use([autroute, urlroute, userroute, rankingroute])
+const app = express()
+app.use(cors())
+app.use(express.json())
+app.use([autroute, urlroute, userroute, rankingroute])
 
 const port = process.env.PORT || 5000
 
-server.listen(port, () => console.log(`O server está rodando na porta: ${port}`))
+app.listen(port, () => console.log(`SERVER IS RUNNING IN PORT: ${port}`))
