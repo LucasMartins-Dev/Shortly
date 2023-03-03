@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { db } from "../database/database.js";
 
-export async function createShortUrl(req, res) {
+export async function ShortUrl(req, res) {
   const {url} = req.body
   const session = res.locals.session
   const shortUrl = nanoid(8)
